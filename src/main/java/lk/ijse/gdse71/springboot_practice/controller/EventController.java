@@ -5,6 +5,8 @@ import lk.ijse.gdse71.springboot_practice.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * --------------------------------------------
  * Author: Zeenathul Ilma
@@ -31,5 +33,10 @@ public class EventController {
     @PutMapping("edit")
     public void updateEvent(@RequestBody EventDTO eventDTO){
         eventService.updateEvent(eventDTO);
+    }
+
+    @GetMapping("allevents")
+    public List<EventDTO> getAllEvents(){
+        return eventService.getAllEvents();
     }
 }

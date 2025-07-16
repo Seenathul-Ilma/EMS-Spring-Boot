@@ -6,7 +6,11 @@ import lk.ijse.gdse71.springboot_practice.repository.EventRepository;
 import lk.ijse.gdse71.springboot_practice.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * --------------------------------------------
@@ -34,5 +38,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public void updateEvent(EventDTO eventDTO) {
         eventRepository.save(modelMapper.map(eventDTO, Event.class));
+    }
+
+    @Override
+    public List<EventDTO> getAllEvents() {
+        List<Event> allEvents = eventRepository.findAll();
+        return modelMapper.map(allEvents, new TypeToken<List<EventDTO>>() {}.getType());
     }
 }
