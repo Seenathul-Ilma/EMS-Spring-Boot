@@ -50,4 +50,10 @@ public class EventServiceImpl implements EventService {
     public void changeEventStatusById(Integer id) {
         eventRepository.updateEventStatusById(id);
     }
+
+    @Override
+    public List<EventDTO> getAllEventsByKeyword(String keyword) {
+        List<Event> list = eventRepository.findEventsByEventStatusContainingIgnoreCaseOrderByEventDate(keyword);
+        return modelMapper.map(list, new TypeToken<List<EventDTO>>() {}.getType());
+    }
 }

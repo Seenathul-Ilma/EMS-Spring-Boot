@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
@@ -16,4 +18,5 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Query(value = "UPDATE event SET event_status='Completed' WHERE event_id=?", nativeQuery = true)
     void updateEventStatusById(Integer id);    // Entity & Primary Key Type
 
+    List<Event> findEventsByEventStatusContainingIgnoreCaseOrderByEventDate(String keyword);
 }

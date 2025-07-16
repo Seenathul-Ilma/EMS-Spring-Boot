@@ -44,4 +44,10 @@ public class EventController {
     public void changeEventStatus(@PathVariable("id") Integer id){
         eventService.changeEventStatusById(id);
     }
+
+    @GetMapping("filter/{keyword}")
+    public List<EventDTO> filterEventsByKeyword(@PathVariable("keyword") String keyword) {
+        return eventService.getAllEventsByKeyword(keyword);
+    }
+
 }

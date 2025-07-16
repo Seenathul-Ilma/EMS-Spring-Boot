@@ -11,4 +11,6 @@ public interface EventService {
     List<EventDTO> getAllEvents();
 
     void changeEventStatusById(Integer id);
+
+    List<EventDTO> getAllEventsByKeyword(String keyword);
 }
