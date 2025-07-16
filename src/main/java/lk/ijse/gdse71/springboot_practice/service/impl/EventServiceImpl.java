@@ -30,4 +30,9 @@ public class EventServiceImpl implements EventService {
     public void saveEvent(EventDTO eventDTO) {
         eventRepository.save(modelMapper.map(eventDTO, Event.class));
     }
+
+    @Override
+    public void updateEvent(EventDTO eventDTO) {
+        eventRepository.save(modelMapper.map(eventDTO, Event.class));
+    }
 }
