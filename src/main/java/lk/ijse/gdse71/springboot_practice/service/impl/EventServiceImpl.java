@@ -45,4 +45,9 @@ public class EventServiceImpl implements EventService {
         List<Event> allEvents = eventRepository.findAll();
         return modelMapper.map(allEvents, new TypeToken<List<EventDTO>>() {}.getType());
     }
+
+    @Override
+    public void changeEventStatusById(Integer id) {
+        eventRepository.updateEventStatusById(id);
+    }
 }

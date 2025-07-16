@@ -9,4 +9,6 @@ public interface EventService {
     void updateEvent(EventDTO eventDTO);
 
     List<EventDTO> getAllEvents();
+
+    void changeEventStatusById(Integer id);
 }

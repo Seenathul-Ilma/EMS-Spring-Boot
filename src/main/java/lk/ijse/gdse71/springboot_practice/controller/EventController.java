@@ -39,4 +39,9 @@ public class EventController {
     public List<EventDTO> getAllEvents(){
         return eventService.getAllEvents();
     }
+
+    @PatchMapping("status/{id}")
+    public void changeEventStatus(@PathVariable("id") Integer id){
+        eventService.changeEventStatusById(id);
+    }
 }
