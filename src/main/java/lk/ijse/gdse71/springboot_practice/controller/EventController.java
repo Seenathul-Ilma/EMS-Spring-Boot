@@ -35,7 +35,7 @@ public class EventController {
         eventService.updateEvent(eventDTO);
     }
 
-    @GetMapping("allevents")
+    @GetMapping("all")
     public List<EventDTO> getAllEvents(){
         return eventService.getAllEvents();
     }
