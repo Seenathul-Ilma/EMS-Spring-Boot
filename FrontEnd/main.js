@@ -5,6 +5,8 @@ $(document).ready(function() {
     loadAllEvents();
 });
 
+let allEvents = [];
+
 function generateNextEventId() {
     $.ajax({
         url: `${apiUrl}/all`,
@@ -24,13 +26,27 @@ function loadAllEvents() {
         url: `${apiUrl}/all`,
         method: 'GET',
         success: function(response) {
-            renderEventCards(response);
-            console.log(response);
+            //renderEventCards(response);
+            //console.log(response);
+            allEvents = response;
+            renderPaginatedEvents(1);
+            generatePaginationButtons(response.length);
         },
         error: function() {
             alert("Error..!\nFailed to load events..!")
         }
     });
+}
+
+const itemsPerPage = 4;
+let currentPage = 1;
+
+function renderPaginatedEvents(page) {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedEvents = allEvents.slice(startIndex, endIndex);
+
+    renderEventCards(paginatedEvents);
 }
 
 function renderEventCards(events) {
@@ -67,6 +83,62 @@ function renderEventCards(events) {
         eventCardContainer.append(eventCard);
     });
 }
+
+function generatePaginationButtons(totalCount) {
+    const pageCount = Math.ceil(totalCount / itemsPerPage);
+    const paginationContainer = $('.pagination');
+    paginationContainer.empty();
+
+    // Previous
+    paginationContainer.append(`
+        <li class="page-item">
+            <a class="page-link bg-secondary text-white" href="#" aria-label="Previous" onclick="goToPage('prev')">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+    `);
+
+    // Page numbers
+    for (let i = 1; i <= pageCount; i++) {
+        const isActive = (i === currentPage);
+        paginationContainer.append(`
+            <!-- li class="page-item ${isActive ? 'active' : ''}" -->
+            <li class="page-item">
+                <a class="page-link ${isActive ? 'bg-secondary text-white' : 'text-dark'}" 
+                href="#" 
+                onclick="goToPage(${i})">
+                ${i}
+                </a>
+            </li>
+        `);
+    }
+
+    // Next
+    paginationContainer.append(`
+        <li class="page-item">
+            <a class="page-link bg-secondary text-white" href="#" aria-label="Next" onclick="goToPage('next')">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    `);
+}
+
+function goToPage(page) {
+    const pageCount = Math.ceil(allEvents.length / itemsPerPage);
+
+    if (page === 'next') {
+        if (currentPage < pageCount) currentPage++;
+    } else if (page === 'prev') {
+        if (currentPage > 1) currentPage--;
+    } else {
+        currentPage = page;
+    }
+
+    renderPaginatedEvents(currentPage);
+    generatePaginationButtons(allEvents.length); // Re-generate pagination buttons with updated currentPage
+
+}
+
 
 $('#event-card-container').on('click', '.event-card, #event-edit', function () {
     const event = $(this).data('event');
