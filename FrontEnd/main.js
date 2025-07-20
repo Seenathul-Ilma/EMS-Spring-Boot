@@ -120,8 +120,11 @@ function renderEventCards(events) {
                         <button class="btn btn-sm btn-dark event_edit">
                             <i class="ti ti-edit fs-6"></i> Edit
                         </button>
-                        <button class="btn btn-sm btn-danger event_delete">
+                        <!--<button class="btn btn-sm btn-danger event_delete">
                             <i class="ti ti-trash fs-6"></i> Delete
+                        </button>-->
+                        <button class="btn btn-sm btn-danger event_status_change">
+                            <i class="ti ti-trash fs-6"></i> Mark As Completed
                         </button>
                     </div>
                 </div>
@@ -311,5 +314,35 @@ $('#event_update').click(function () {
             alert('Failed to update event..!');
         }
     })
+});
+
+
+$('#event-card-container').on('click', '.event_status_change', function (e){
+    e.stopPropagation();
+    const event = $(this).closest('.event-card').data('event');
+    const eventId = event.eventId;
+    const isConfirm = confirm("Do you want to delete this event?");
+
+    if(isConfirm) {
+        $.ajax({
+            //url: apiUrl,
+            //url: "http://localhost:8080/App1_Web_exploded/event?eid"+eventId,
+            //url: "http://localhost:8080/App1_Web_exploded/dbcp?eid"+eventId,
+            url: `${apiUrl}/status/${eventId}`,
+            method: 'PATCH',
+            contentType: 'application/json',
+            data: JSON.stringify({ eid: eventId }),
+            success: function (response) {
+                alert('Successfully changed event status..!');
+                console.log(response);
+                loadAllEvents();
+                generateNextEventId();
+                $('#event_reset').click();
+            },
+            error: function () {
+                alert('Failed to change event status..!');
+            }
+        });
+    }
 });
 
