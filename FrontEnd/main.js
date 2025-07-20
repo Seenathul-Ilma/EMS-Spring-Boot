@@ -29,7 +29,7 @@ function loadAllEvents() {
             //renderEventCards(response);
             //console.log(response);
             allEvents = response;
-            renderPaginatedEvents(1);
+            renderPaginatedEvents(currentPage);
             generatePaginationButtons(response.length);
         },
         error: function() {
@@ -212,8 +212,8 @@ $('#event_add').click(function () {
             //renderEventCards(response);
             loadAllEvents();
             generateNextEventId();
-                $('#event_reset').click();
-            },
+            $('#event_reset').click();
+        },
         /*success: function () {
             alert('Data saved');
             // fetch all events again to update UI
