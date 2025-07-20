@@ -3,9 +3,53 @@ const apiUrl = 'http://localhost:8080/api/v1/event';
 $(document).ready(function() {
     generateNextEventId();
     loadAllEvents();
+
+    function searchEvents() {
+        const value = $("#search_event_input").val().toLowerCase();
+
+        filteredEvents = allEvents.filter(event =>
+            event.eventName.toLowerCase().includes(value) ||
+            event.eventDescription.toLowerCase().includes(value) ||
+            event.eventLocation.toLowerCase().includes(value) ||
+            event.eventStatus.toLowerCase().includes(value)
+        );
+
+        if (filteredEvents.length === 0) {
+            $('#event-card-container').html(`
+                <div id="no-results" class="text-center text-muted mt-3">
+                    <p>No matching events found.</p>
+                </div>
+            `);
+            $('.pagination').empty(); // remove pagination if not found
+        } else {
+            currentPage = 1;
+            renderPaginatedEvents(currentPage);
+            generatePaginationButtons(filteredEvents.length);
+        }
+    }
+
+    // to search events at live (while typing)
+    $("#search_event_input").on("keyup", searchEvents);
+
+    // to search events after click search btn
+    $('#search_event_btn').on('click', function (e) {
+        e.preventDefault();
+        searchEvents();
+    });
+
+    $('#search_event_input').on('input', function () {
+    if ($(this).val().trim() === '') {
+        filteredEvents = []; // Reset filters
+        //renderPaginatedEvents(1); // Reset to page 1
+        //generatePaginationButtons(allEvents.length);
+    }
+});
+
+
 });
 
 let allEvents = [];
+let filteredEvents = []; // add this next to allEvents
 
 function generateNextEventId() {
     $.ajax({
@@ -29,6 +73,7 @@ function loadAllEvents() {
             //renderEventCards(response);
             //console.log(response);
             allEvents = response;
+            filteredEvents = []; // reset filters
             renderPaginatedEvents(currentPage);
             generatePaginationButtons(response.length);
         },
@@ -42,9 +87,12 @@ const itemsPerPage = 4;
 let currentPage = 1;
 
 function renderPaginatedEvents(page) {
+    const dataToUse = filteredEvents.length ? filteredEvents : allEvents;
+
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const paginatedEvents = allEvents.slice(startIndex, endIndex);
+    //const paginatedEvents = allEvents.slice(startIndex, endIndex);
+    const paginatedEvents = dataToUse.slice(startIndex, endIndex);
 
     renderEventCards(paginatedEvents);
 }
@@ -124,7 +172,8 @@ function generatePaginationButtons(totalCount) {
 }
 
 function goToPage(page) {
-    const pageCount = Math.ceil(allEvents.length / itemsPerPage);
+    const dataToUse = filteredEvents.length ? filteredEvents : allEvents;
+    const pageCount = Math.ceil(dataToUse.length / itemsPerPage);
 
     if (page === 'next') {
         if (currentPage < pageCount) currentPage++;
@@ -135,7 +184,8 @@ function goToPage(page) {
     }
 
     renderPaginatedEvents(currentPage);
-    generatePaginationButtons(allEvents.length); // Re-generate pagination buttons with updated currentPage
+    //generatePaginationButtons(allEvents.length); // Re-generate pagination buttons with updated currentPage
+    generatePaginationButtons(dataToUse.length); // Re-generate pagination buttons with updated currentPage
 
 }
 
