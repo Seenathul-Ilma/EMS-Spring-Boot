@@ -40,8 +40,8 @@ $(document).ready(function() {
     $('#search_event_input').on('input', function () {
     if ($(this).val().trim() === '') {
         filteredEvents = []; // Reset filters
-        //renderPaginatedEvents(1); // Reset to page 1
-        //generatePaginationButtons(allEvents.length);
+        renderPaginatedEvents(1); // Reset to page 1
+        generatePaginationButtons(allEvents.length);
     }
 });
 
