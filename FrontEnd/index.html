@@ -26,10 +26,22 @@
                         <button type="button" id="getAllEvents" class="btn btn-secondary btn-sm"><i class="ti ti-timeline-event fs-6"></i> View</button>
                         <button type="button" id="new_event_btn" class="btn btn-secondary btn-sm"><i class="ti ti-copy-plus fs-6"></i> New</button>
                     </a>
-                    <form class="d-flex search" role="search">
+                    <form class="d-flex search align-items-center gap-2" role="search">
+                        <div class="d-flex align-items-center gap-1">
+                            <i class="ti ti-filter fs-6"></i>
+                            <select class="form-select form-select-sm w-auto" id="filter_status">
+                                <option value="All Events" selected>All Statuses</option>
+                                <option value="Scheduled">Scheduled</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+
                         <input class="form-control form-control-sm me-2" id="search_event_input" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-secondary text-dark btn-sm" id="search_event_btn" type="submit"><i class="bi bi-search"></i></button>
+                        <button class="btn btn-secondary text-dark btn-sm" id="search_event_btn" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
                     </form>
+
                 </div>
             </nav>
 

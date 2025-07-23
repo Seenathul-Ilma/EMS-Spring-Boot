@@ -346,3 +346,28 @@ $('#event-card-container').on('click', '.event_status_change', function (e){
     }
 });
 
+$('#filter_status').on('change', function () {
+    let status = $(this).val();
+    console.log("Changed to:", status);
+
+    if(status !== 'All Events') {
+        $.ajax({
+            //url: apiUrl,
+            //url: "http://localhost:8080/App1_Web_exploded/event?eid"+eventId,
+            //url: "http://localhost:8080/App1_Web_exploded/dbcp?eid"+eventId,
+            url: `${apiUrl}/filter/${status}`,
+            method: 'GET',
+            success: function(response) {
+                filteredEvents = response; // reset filters
+                renderPaginatedEvents(currentPage);
+                generatePaginationButtons(response.length);
+            },
+            error: function() {
+                alert("Error..!\nFailed to filter events..!")
+            }
+        });
+    } else {
+        loadAllEvents();
+    }
+
+});
