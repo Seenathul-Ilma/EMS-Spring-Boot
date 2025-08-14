@@ -30,24 +30,28 @@ import java.nio.file.Paths;
 public class HTMLController {
 
 
-        @GetMapping("/")
-        public ResponseEntity<Resource> loadIndex() {
-            try {
-                // Path to your external folder (project root / FrontEnd)
-                Path htmlFilePath = Paths.get("FrontEnd/index.html").toAbsolutePath().normalize();
-                Resource resource = new UrlResource(htmlFilePath.toUri());
+    @GetMapping("/")
+    public ResponseEntity<Resource> loadIndex() {
+        try {
+            // Resolve the full path based on the current working directory
+            Path htmlFilePath = Paths.get("FrontEnd", "index.html").toAbsolutePath();
+            System.out.println("Trying to load: " + htmlFilePath);
 
-                if (resource.exists() && resource.isReadable()) {
-                    return ResponseEntity.ok()
-                            .contentType(MediaType.TEXT_HTML)
-                            .body(resource);
-                } else {
-                    return ResponseEntity.notFound().build();
-                }
-            } catch (MalformedURLException e) {
-                return ResponseEntity.internalServerError().build();
+            Resource resource = new UrlResource(htmlFilePath.toUri());
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.TEXT_HTML)
+                        .body(resource);
+            } else {
+                System.out.println("File not found or not readable!");
+                return ResponseEntity.notFound().build();
             }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
+    }
+
 
 
     @GetMapping("/api/v1/event")
