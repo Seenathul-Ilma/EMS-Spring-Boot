@@ -2,6 +2,7 @@ package lk.ijse.gdse71.springboot_practice.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.core.io.Resource;
@@ -28,7 +29,8 @@ import java.nio.file.Paths;
  * --------------------------------------------
  **/
 
-
+//@CrossOrigin(origins = "https://eventms-abc077b65d00.herokuapp.com")
+@CrossOrigin
 @RestController
 public class HTMLController {
 
