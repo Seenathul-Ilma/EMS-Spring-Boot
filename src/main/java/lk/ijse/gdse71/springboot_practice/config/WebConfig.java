@@ -22,11 +22,17 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("file:FrontEnd/"); // Serve from project folder
+    }
+
+    /*@Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String frontendPath = Paths.get("FrontEnd").toAbsolutePath().toUri().toString();
 
         registry.addResourceHandler("/**")
                 .addResourceLocations(frontendPath);
-    }
+    }*/
 }
 
 /*@Configuration
