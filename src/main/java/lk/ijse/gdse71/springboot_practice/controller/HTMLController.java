@@ -33,8 +33,9 @@ public class HTMLController {
     @GetMapping("/")
     public ResponseEntity<Resource> loadIndex() {
         try {
-            // Resolve the full path based on the current working directory
-            Path htmlFilePath = Paths.get("FrontEnd", "index.html").toAbsolutePath();
+            // Use user.dir to get Heroku working directory
+            String userDir = System.getProperty("user.dir");
+            Path htmlFilePath = Paths.get(userDir, "FrontEnd", "index.html").toAbsolutePath();
             System.out.println("Trying to load: " + htmlFilePath);
 
             Resource resource = new UrlResource(htmlFilePath.toUri());
@@ -51,7 +52,6 @@ public class HTMLController {
             return ResponseEntity.internalServerError().build();
         }
     }
-
 
 
     @GetMapping("/api/v1/event")
