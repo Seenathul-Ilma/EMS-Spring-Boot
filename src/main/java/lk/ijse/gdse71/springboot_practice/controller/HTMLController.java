@@ -65,6 +65,42 @@ public class HTMLController {
         }
     }
 
+    @GetMapping("/style.css")
+    public ResponseEntity<Resource> getStyleCss() throws MalformedURLException {
+        Path path = Paths.get(System.getProperty("user.dir"), "FrontEnd", "style.css");
+        Resource resource = new UrlResource(path.toUri());
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf("text/css")) // <-- here
+                .body(resource);
+    }
+
+    @GetMapping("/main.js")
+    public ResponseEntity<Resource> getMainJsFile() throws MalformedURLException {
+        Path path = Paths.get(System.getProperty("user.dir"), "FrontEnd", "main.js");
+        Resource resource = new UrlResource(path.toUri());
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf("application/javascript")) // <-- here
+                .body(resource);
+    }
+
+    @GetMapping("/lib/normalize.css")
+    public ResponseEntity<Resource> getNormalizeCss() throws MalformedURLException {
+        Path path = Paths.get(System.getProperty("user.dir"), "FrontEnd", "lib/normalize.css");
+        Resource resource = new UrlResource(path.toUri());
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf("text/css"))
+                .body(resource);
+    }
+
+    @GetMapping("/lib/jquery-3.7.1.min.js")
+    public ResponseEntity<Resource> getJqueryJs() throws MalformedURLException {
+        Path path = Paths.get(System.getProperty("user.dir"), "FrontEnd", "lib/jquery-3.7.1.min.js");
+        Resource resource = new UrlResource(path.toUri());
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf("application/javascript"))
+                .body(resource);
+    }
+
 }
 
 /*@Controller
