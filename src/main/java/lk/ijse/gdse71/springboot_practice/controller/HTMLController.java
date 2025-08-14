@@ -29,10 +29,26 @@ import java.nio.file.Paths;
 @RestController
 public class HTMLController {
 
-    @GetMapping("/")
-    public String hello() {
-        return "Hello, Heroku is working!";
-    }
+
+        @GetMapping("/")
+        public ResponseEntity<Resource> loadIndex() {
+            try {
+                // Path to your external folder (project root / FrontEnd)
+                Path htmlFilePath = Paths.get("FrontEnd/index.html").toAbsolutePath().normalize();
+                Resource resource = new UrlResource(htmlFilePath.toUri());
+
+                if (resource.exists() && resource.isReadable()) {
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.TEXT_HTML)
+                            .body(resource);
+                } else {
+                    return ResponseEntity.notFound().build();
+                }
+            } catch (MalformedURLException e) {
+                return ResponseEntity.internalServerError().build();
+            }
+        }
+
 
     @GetMapping("/api/v1/event")
     public ResponseEntity<Resource> index() {
@@ -49,7 +65,9 @@ public class HTMLController {
         } catch (MalformedURLException e) {
             return ResponseEntity.internalServerError().build();
         }
+
     }
+
 }
 
 /*@Controller
