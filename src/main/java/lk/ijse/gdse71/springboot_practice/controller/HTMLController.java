@@ -33,10 +33,9 @@ public class HTMLController {
     @GetMapping("/")
     public ResponseEntity<Resource> loadIndex() {
         try {
-            // Use user.dir to get Heroku working directory
-            String userDir = System.getProperty("user.dir");
-            Path htmlFilePath = Paths.get(userDir, "FrontEnd", "index.html").toAbsolutePath();
-            System.out.println("Trying to load: " + htmlFilePath);
+            // Use absolute path based on working directory
+            Path htmlFilePath = Paths.get(System.getProperty("user.dir"), "FrontEnd", "index.html");
+            System.out.println("Looking for file at: " + htmlFilePath);
 
             Resource resource = new UrlResource(htmlFilePath.toUri());
             if (resource.exists() && resource.isReadable()) {
