@@ -29,26 +29,20 @@ import java.nio.file.Paths;
 @RestController
 public class HTMLController {
 
-
     // Serve external FrontEnd/index.html for root
     @GetMapping("/")
     public ResponseEntity<Resource> loadIndex() {
         try {
-            // Use Heroku’s working directory
             Path htmlFilePath = Paths.get(System.getProperty("user.dir"), "FrontEnd", "index.html");
-            System.out.println("Loading HTML from: " + htmlFilePath); // debug log
-
             Resource resource = new UrlResource(htmlFilePath.toUri());
             if (resource.exists() && resource.isReadable()) {
                 return ResponseEntity.ok()
                         .contentType(MediaType.TEXT_HTML)
                         .body(resource);
             } else {
-                System.out.println("File not found or not readable!");
                 return ResponseEntity.notFound().build();
             }
         } catch (MalformedURLException e) {
-            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
