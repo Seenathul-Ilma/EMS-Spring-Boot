@@ -1,5 +1,5 @@
 //const apiUrl = 'http://localhost:8080/api/v1/event';
-const apiUrl = 'https://eventmanagementsystem-3ad02cec20d5.herokuapp.com/api/v1/event';
+const apiUrl = 'https://eventms-49d40256cb77.herokuapp.com/api/v1/event';
 
 $(document).ready(function() {
     generateNextEventId();
