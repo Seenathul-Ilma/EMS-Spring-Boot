@@ -30,12 +30,13 @@ import java.nio.file.Paths;
 public class HTMLController {
 
 
+    // Serve external FrontEnd/index.html for root
     @GetMapping("/")
     public ResponseEntity<Resource> loadIndex() {
         try {
-            // Use absolute path based on working directory
+            // Use Heroku’s working directory
             Path htmlFilePath = Paths.get(System.getProperty("user.dir"), "FrontEnd", "index.html");
-            System.out.println("Looking for file at: " + htmlFilePath);
+            System.out.println("Loading HTML from: " + htmlFilePath); // debug log
 
             Resource resource = new UrlResource(htmlFilePath.toUri());
             if (resource.exists() && resource.isReadable()) {
@@ -52,13 +53,13 @@ public class HTMLController {
         }
     }
 
-
+    // Optional: keep /api/v1/event if needed
     @GetMapping("/api/v1/event")
-    public ResponseEntity<Resource> index() {
+    public ResponseEntity<Resource> loadEventPage() {
         try {
-            Path htmlFilePath = Paths.get("FrontEnd/index.html").toAbsolutePath().normalize();
+            Path htmlFilePath = Paths.get(System.getProperty("user.dir"), "FrontEnd", "index.html");
             Resource resource = new UrlResource(htmlFilePath.toUri());
-            if (resource.exists()) {
+            if (resource.exists() && resource.isReadable()) {
                 return ResponseEntity.ok()
                         .contentType(MediaType.TEXT_HTML)
                         .body(resource);
@@ -68,7 +69,6 @@ public class HTMLController {
         } catch (MalformedURLException e) {
             return ResponseEntity.internalServerError().build();
         }
-
     }
 
 }
