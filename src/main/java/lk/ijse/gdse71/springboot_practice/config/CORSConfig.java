@@ -38,7 +38,7 @@ public class CORSConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**") // allow CORS for all /api paths
-                        .allowedOrigins("https://eventms-abc077b65d00.herokuapp.com") // frontend origin
+                        .allowedOrigins("https://eventms-49d40256cb77.herokuapp.com/") // frontend origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
