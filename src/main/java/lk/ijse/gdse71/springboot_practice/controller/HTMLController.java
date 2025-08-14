@@ -29,6 +29,11 @@ import java.nio.file.Paths;
 @RestController
 public class HTMLController {
 
+    @GetMapping("/")
+    public String hello() {
+        return "Hello, Heroku is working!";
+    }
+
     @GetMapping("/api/v1/event")
     public ResponseEntity<Resource> index() {
         try {
