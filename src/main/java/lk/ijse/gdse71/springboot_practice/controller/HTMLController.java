@@ -1,5 +1,6 @@
 package lk.ijse.gdse71.springboot_practice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -10,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -30,7 +33,7 @@ import java.nio.file.Paths;
 public class HTMLController {
 
     // Serve external FrontEnd/index.html for root
-    @GetMapping("/")
+    /*@GetMapping("/")
     public ResponseEntity<Resource> loadIndex() {
         try {
             Path htmlFilePath = Paths.get(System.getProperty("user.dir"), "FrontEnd", "index.html");
@@ -63,42 +66,25 @@ public class HTMLController {
         } catch (MalformedURLException e) {
             return ResponseEntity.internalServerError().build();
         }
-    }
+    }*/
 
-    @GetMapping("/style.css")
-    public ResponseEntity<Resource> getStyleCss() throws MalformedURLException {
-        Path path = Paths.get(System.getProperty("user.dir"), "FrontEnd", "style.css");
-        Resource resource = new UrlResource(path.toUri());
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf("text/css")) // <-- here
-                .body(resource);
-    }
+    @GetMapping({"/", "/**"})
+    public ResponseEntity<Resource> serveFrontEnd(HttpServletRequest request) throws IOException {
+        String path = request.getRequestURI(); // e.g., "/style.css" or "/lib/jquery.js"
 
-    @GetMapping("/main.js")
-    public ResponseEntity<Resource> getMainJsFile() throws MalformedURLException {
-        Path path = Paths.get(System.getProperty("user.dir"), "FrontEnd", "main.js");
-        Resource resource = new UrlResource(path.toUri());
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf("application/javascript")) // <-- here
-                .body(resource);
-    }
+        // Default to index.html for root
+        if (path.equals("/")) path = "/index.html";
 
-    @GetMapping("/lib/normalize.css")
-    public ResponseEntity<Resource> getNormalizeCss() throws MalformedURLException {
-        Path path = Paths.get(System.getProperty("user.dir"), "FrontEnd", "lib/normalize.css");
-        Resource resource = new UrlResource(path.toUri());
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf("text/css"))
-                .body(resource);
-    }
+        Path filePath = Paths.get(System.getProperty("user.dir"), "FrontEnd", path.substring(1));
+        Resource resource = new UrlResource(filePath.toUri());
 
-    @GetMapping("/lib/jquery-3.7.1.min.js")
-    public ResponseEntity<Resource> getJqueryJs() throws MalformedURLException {
-        Path path = Paths.get(System.getProperty("user.dir"), "FrontEnd", "lib/jquery-3.7.1.min.js");
-        Resource resource = new UrlResource(path.toUri());
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf("application/javascript"))
-                .body(resource);
+        if (resource.exists() && resource.isReadable()) {
+            String mimeType = Files.probeContentType(filePath);
+            if (mimeType == null) mimeType = "application/octet-stream";
+            return ResponseEntity.ok().contentType(MediaType.valueOf(mimeType)).body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
