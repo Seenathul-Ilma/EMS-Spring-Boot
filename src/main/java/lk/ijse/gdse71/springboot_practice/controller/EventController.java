@@ -18,7 +18,7 @@ import java.util.List;
  * --------------------------------------------
  **/
 
-@CrossOrigin
+//@CrossOrigin
 @RequestMapping("api/v1/event")
 @RestController
 @RequiredArgsConstructor

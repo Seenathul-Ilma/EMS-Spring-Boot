@@ -30,7 +30,7 @@ import java.nio.file.Paths;
  **/
 
 //@CrossOrigin(origins = "https://eventms-abc077b65d00.herokuapp.com")
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class HTMLController {
 
